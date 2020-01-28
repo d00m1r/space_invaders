@@ -9,7 +9,7 @@ class Ship():
         self.ai_settings = ai_settings
 
         #convert() speeds up surface rendering
-        self.image = pygame.image.load('/home/damir/projects/python/space_invaders/pic/player.png').convert()
+        self.image = pygame.image.load('/home/damir/projects/python/space_invaders/pic/spaceship.png').convert()
 
         #make the background of the picture transparent
         self.image.set_colorkey((0, 0, 0))
@@ -29,10 +29,11 @@ class Ship():
         self.moving_left = False
 
     def draw_ship(self):
+        self.update()
         self.screen.blit(self.image, self.ship_rect)
 
     def update(self):
-        """Update the ship's position based on the movement flagss"""
+        """Update the ship's position based on the movement flags"""
 
         # Update the ship's center value, not the rect
         if self.moving_right and self.ship_rect.right < self.screen_rect.right:
