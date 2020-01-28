@@ -2,8 +2,10 @@ import sys
 import pygame
 
 #from game_const import *
+import game_functions as gf
 from settings import Settings
 from spaceship import Ship
+
 
 def run():
     pygame.init()
@@ -16,15 +18,8 @@ def run():
     #main loop
     while True:
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-
-        #Draw screen and elements
-        screen.fill(ai_settings.bg_color)
-        ship.draw_ship()
-        pygame.display.flip()
-        #clock.tick(30)
+        gf.check_events()
+        gf.update_screen(ai_settings, screen, ship)
     #pygame.quit()
 
 if __name__ == '__main__':
