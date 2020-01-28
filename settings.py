@@ -13,7 +13,15 @@ class Settings():
         self.ship_speed_factor = 1.5
 
         #Bullet
-        self.bullet_speed_factor = 1
+        self.bullet_speed_factor = 7
         self.bullet_width = 3
         self.bullet_height = 15
-        self.bullet_color = 60, 60, 60
+        self.bullet_color = 200, 200, 0
+        self.bullets_allowed = 100
+
+        #Alien
+        self.alien_speed_factor = 1
+        self.fleet_drop_speed = 10
+        #fleet_direction of 1 represents right, -1 represents left
+        self.fleet_direction = 1
+
