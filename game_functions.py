@@ -43,15 +43,16 @@ def check_keypress_events(event, ship, screen, bullets, ai_settings):
         elif event.key == pygame.K_LEFT:
             ship.moving_left = False
 
-def create_fleet(ai_settings, screen, aliens, ship):
+def create_fleet(ai_settings, screen, ship, aliens):
     '''Create a full fleet of aliens'''
     #create an alien and find the number of aliens in a row
     #spacing between each alien is equal to one alien width
     alien = Alien(ai_settings, screen)
     alien_width = alien.rect.width
+    ship_height = ship.rect.height
     available_space_x = ai_settings.screen_wigth - 2 * alien_width
     number_aliens_x = int(available_space_x / (2 * alien_width))
-    number_rows = get_number_rows(ai_settings, ship.ship_rect.height, alien.rect.height)
+    number_rows = get_number_rows(ai_settings, ship_height, alien.rect.height)
 
     #create the fleet of aliens
     for row_number in range(number_rows):
@@ -75,15 +76,23 @@ def create_alien(ai_settings, screen, aliens, alien_number, row_number):
     aliens.add(alien)
 
 
-def update_bullets(bullets):
+def update_bullets(aliens, bullets, ai_settings, screen, ship):
     #calls bullet.update() for each bullet we place in the group bullets
         bullets.update()
 
         #get rid of bullets that have disappeared
         for bullet in bullets.copy():
-            if bullet.bul_rect.bottom <= 0:
+            if bullet.rect.bottom <= 0:
                 bullets.remove(bullet)
         print(len(bullets))
+
+        #check for any bullets that have hit aliens
+        collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+
+        if len(aliens) == 0:
+            #destroy existing bullets and create new fleet.
+            bullets.empty()
+            create_fleet(ai_settings, screen, ship, aliens)
 
 def update_aliens(ai_settings, aliens):
     '''update the positions of all aliens in the fleet'''
@@ -91,7 +100,7 @@ def update_aliens(ai_settings, aliens):
     aliens.update()
 
 def check_fleet_edges(ai_settings, aliens):
-    '''respond appropriately if anu aliens have reached and edge'''
+    '''respond appropriately if any aliens have reached and edge'''
     for alien in aliens.sprites():
         if alien.check_edges():
             change_fleet_direction(ai_settings, aliens)
@@ -111,8 +120,8 @@ def update_screen(ai_settings, screen, ship, bullets, aliens):
     ship.draw_ship()
     #alien.draw_alien()
     aliens.draw(screen)
+    update_bullets(aliens, bullets, ai_settings, screen, ship)
 
-    update_bullets(bullets)
     #redraw all bullets behind ship and aliens
     for bullet in bullets.sprites():
         bullet.draw_bullet()
