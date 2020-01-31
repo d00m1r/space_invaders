@@ -15,14 +15,14 @@ def run():
     pygame.display.set_caption('Space invaders')
 
     ship = Ship(ai_settings, screen)
-    alien = Alien(ai_settings, screen)
+    #alien = Alien(ai_settings, screen)
 
     #make a group to store bullets in
     bullets = Group()
     aliens = Group()
 
     #create he fleet of aliens
-    gf.create_fleet(ai_settings, screen, aliens, ship)
+    gf.create_fleet(ai_settings, screen, ship, aliens)
     
     #main loop
     while True:

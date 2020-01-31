@@ -15,14 +15,14 @@ class Ship():
         self.image.set_colorkey((0, 0, 0))
 
         #all elements in game is rects
-        self.ship_rect = self.image.get_rect()
+        self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
 
-        self.ship_rect.centerx = self.screen_rect.centerx
-        self.ship_rect.bottom = self.screen_rect.bottom
+        self.rect.centerx = self.screen_rect.centerx
+        self.rect.bottom = self.screen_rect.bottom
 
         # Store a decimal value for the ship's center.
-        self.center = float(self.ship_rect.centerx)
+        self.center = float(self.rect.centerx)
 
         #movement flag
         self.moving_right = False
@@ -30,16 +30,16 @@ class Ship():
 
     def draw_ship(self):
         self.update()
-        self.screen.blit(self.image, self.ship_rect)
+        self.screen.blit(self.image, self.rect)
 
     def update(self):
         """Update the ship's position based on the movement flags"""
 
         # Update the ship's center value, not the rect
-        if self.moving_right and self.ship_rect.right < self.screen_rect.right:
+        if self.moving_right and self.rect.right < self.screen_rect.right:
             self.center += self.ai_settings.ship_speed_factor
-        if self.moving_left and self.ship_rect.left > self.screen_rect.left:
+        if self.moving_left and self.rect.left > self.screen_rect.left:
             self.center -= self.ai_settings.ship_speed_factor
 
         # Update rect object from self.center
-        self.ship_rect.centerx = self.center
+        self.rect.centerx = self.center
