@@ -5,6 +5,7 @@ class GameStats():
         '''initialize statistics'''
         self.ai_settings = ai_settings
         self.reset_stats()
+        self.score = 0
 
         #start Alien Invasion in an inactive state
         self.game_active = False

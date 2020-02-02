@@ -53,6 +53,8 @@ def check_play_button(stats, play_button, mouse_x, mouse_y, ai_settings, screen,
     '''start a new game when the player clicks Play'''
     button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
     if button_clicked and not stats.game_active:
+        #reset the game settings
+        ai_settings.initialize_dynamic_settings()
         #hide the mouse cursor
         pygame.mouse.set_visible(False)
 
@@ -100,9 +102,12 @@ def create_alien(ai_settings, screen, aliens, alien_number, row_number):
     alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
     aliens.add(alien)
 
-def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets):
+def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, bullets):
     '''respond to bullet-alien collisions'''
-    pygame.sprite.groupcollide(bullets, aliens, True, True)
+    if pygame.sprite.groupcollide(bullets, aliens, True, True):
+        stats.score += ai_settings.alien_points
+        sb.prep_score()
+
     if len(aliens) == 0:
         #destroy existing bullets and create new fleet.
         bullets.empty()
@@ -111,7 +116,7 @@ def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets):
         
         create_fleet(ai_settings, screen, ship, aliens)
 
-def update_bullets(aliens, bullets, ai_settings, screen, ship):
+def update_bullets(aliens, bullets, ai_settings, screen, stats, sb, ship):
     #calls bullet.update() for each bullet we place in the group bullets
         bullets.update()
 
@@ -121,7 +126,7 @@ def update_bullets(aliens, bullets, ai_settings, screen, ship):
                 bullets.remove(bullet)
         print(len(bullets))
 
-        check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets)
+        check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, bullets)
 
 def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
     '''check if any aliens have reached the bottom of the screen'''
@@ -178,19 +183,22 @@ def change_fleet_direction(ai_settings, aliens):
     ai_settings.fleet_direction *= -1
 
     
-def update_screen(ai_settings, stats, screen, ship, bullets, aliens, play_button):
+def update_screen(ai_settings, stats, screen, sb, ship, bullets, aliens, play_button):
     '''draw screen and elements'''
     screen.fill(ai_settings.bg_color)
 
     ship.draw_ship()
     #alien.draw_alien()
     aliens.draw(screen)
-    update_bullets(aliens, bullets, ai_settings, screen, ship)
+    update_bullets(aliens, bullets, ai_settings, screen, stats, sb, ship)
 
     #redraw all bullets behind ship and aliens
     for bullet in bullets.sprites():
         bullet.draw_bullet()
     
+    #draw the score information
+    sb.show_score()
+
     #draw the play button if the game is inactive
     if not stats.game_active:
         play_button.draw_button()
