@@ -9,16 +9,16 @@ class Alien(Sprite):
         self.screen = screen
         self.ai_settings = ai_settings
 
-        # Load the alien image and set its rect attribute.
+        #load the alien image and set its rect attribute
         self.image = pygame.image.load('/home/damir/projects/python/space_invaders/pic/alien.png').convert()
         self.rect = self.image.get_rect()
         self.image.set_colorkey((255, 255, 255 ))
 
-        # Start each new alien near the top left of the screen.
+        #start each new alien near the top left of the screen
         self.rect.x = self.rect.width
         self.rect.y = self.rect.height
 
-        # Store the alien's exact position.
+        #store the alien's exact position
         self.x = float(self.rect.x)
     
     def draw_alien(self):
