@@ -4,7 +4,7 @@ class GameStats():
         '''initialize statistics'''
         self.ai_settings = ai_settings
         self.reset_stats()
-        
+
         #high score should never be reset
         self.high_score = 0
 

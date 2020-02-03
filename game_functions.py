@@ -55,12 +55,6 @@ def check_play_button(stats, play_button, mouse_x, mouse_y, ai_settings, screen,
     if button_clicked and not stats.game_active:
         #reset the game settings
         ai_settings.initialize_dynamic_settings()
-
-        #reset the scoreboard images
-        stats.score = 0
-        sb.prep_score()
-        sb.prep_high_score()
-        sb.prep_lvl()
         
         #hide the mouse cursor
         pygame.mouse.set_visible(False)
@@ -68,6 +62,13 @@ def check_play_button(stats, play_button, mouse_x, mouse_y, ai_settings, screen,
         #reset the game statistics
         stats.reset_stats()
         stats.game_active = True
+
+        #reset the scoreboard images
+        stats.score = 0
+        sb.prep_score()
+        sb.prep_high_score()
+        sb.prep_lvl()
+        sb.prep_ships()
         
         #empty the list of aliens and bullets
         aliens.empty()
@@ -168,6 +169,9 @@ def ship_hit(ai_settings, stats, screen, sb, ship, aliens, bullets):
     if stats.ships_left > 1:
         #decrement ships_left
         stats.ships_left -= 1
+
+        #update scoreboard
+        sb.prep_ships()
 
         #empty the list of aliens and bullets
         aliens.empty()

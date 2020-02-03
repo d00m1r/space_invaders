@@ -1,4 +1,6 @@
 import pygame.font
+from pygame.sprite import Group
+from spaceship import Ship
 
 class Scoreboard():
     '''report scroting information'''
@@ -15,6 +17,8 @@ class Scoreboard():
         #prepare the initial score image
         self.prep_score()
         self.prep_high_score()
+        self.prep_lvl()
+        self.prep_ships()
 
     def prep_score(self):
         '''turn the score into a rendered image'''
@@ -24,8 +28,8 @@ class Scoreboard():
         
         #display the score at the top right of the screen
         self.score_rect = self.score_image.get_rect()
-        self.score_rect.right = self.screen_rect.right - 20
-        self.score_rect.top = 20
+        self.score_rect.right = self.screen_rect.right - 15
+        self.score_rect.top = 15
 
     def prep_high_score(self):
         '''turn the high score into a rendered image'''
@@ -45,10 +49,20 @@ class Scoreboard():
         #position the level below the score
         self.lvl_rect = self.lvl_image.get_rect()
         self.lvl_rect.right = self.score_rect.right
-        self.lvl_rect.top = self.score_rect.bottom + 10
+        self.lvl_rect.top = self.score_rect.bottom + 5
+
+    def prep_ships(self):
+        '''show how many ships are left'''
+        self.ships = Group()
+        for ship_number in range(self.stats.ships_left):
+            ship = Ship(self.ai_settings, self.screen)
+            ship.rect.x = 10 + ship_number * ship.rect.width
+            ship.rect.y = 10
+            self.ships.add(ship)
 
     def show_score(self):
         '''draw score to the screen'''
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)
         self.screen.blit(self.lvl_image, self.lvl_rect)
+        self.ships.draw(self.screen)
