@@ -38,7 +38,7 @@ def check_keypress_events(event, ship, screen, bullets, ai_settings):
         #bullet keypress
         if event.key == pygame.K_SPACE:
             # Create a new bullet and add it to the bullets group.
-            if len(bullets) < ai_settings.bullets_allowed:
+            if len(bullets) < ai_settings.bullet_limit:
                 new_bullet = Bullet(ai_settings, screen, ship)
                 bullets.add(new_bullet)
 
@@ -55,8 +55,12 @@ def check_play_button(stats, play_button, mouse_x, mouse_y, ai_settings, screen,
     if button_clicked and not stats.game_active:
         #reset the game settings
         ai_settings.initialize_dynamic_settings()
+
+        #reset the scoreboard images
         stats.score = 0
         sb.prep_score()
+        sb.prep_high_score()
+        sb.prep_lvl()
         
         #hide the mouse cursor
         pygame.mouse.set_visible(False)
@@ -114,15 +118,18 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, 
 
     #kill all and go to the next lvl
     if len(aliens) == 0:
-        go_next_lvl(ai_settings, screen, ship, aliens, bullets)
+        go_next_lvl(ai_settings, screen, stats, sb, ship, aliens, bullets)
 
-def go_next_lvl(ai_settings, screen, ship, aliens, bullets):
+def go_next_lvl(ai_settings, screen, stats, sb, ship, aliens, bullets):
     #destroy existing bullets and create new fleet
     bullets.empty()
     
     #speed up game
     ai_settings.increase_speed()
     create_fleet(ai_settings, screen, ship, aliens) 
+
+    stats.lvl += 1
+    sb.prep_lvl()
 
 def update_bullets(aliens, bullets, ai_settings, screen, stats, sb, ship):
     #calls bullet.update() for each bullet we place in the group bullets
@@ -206,13 +213,13 @@ def update_screen(ai_settings, stats, screen, sb, ship, bullets, aliens, play_bu
         #redraw all bullets behind ship and aliens
         for bullet in bullets.sprites():
             bullet.draw_bullet()
-    
+
+        #draw the score information
+        sb.show_score()
+
     #game is inactive
     else:
         play_button.draw_button()
-
-    #draw the score information
-    sb.show_score()
 
     pygame.display.flip()
     #clock.tick(30)
