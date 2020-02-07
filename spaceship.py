@@ -15,7 +15,7 @@ class Ship(Sprite):
         self.image = pygame.image.load('/home/damir/projects/python/space_invaders/pic/spaceship.png').convert()
 
         #make the background of the picture transparent
-        self.image.set_colorkey((0, 0, 0))
+        self.image.set_colorkey((255, 255, 255))
 
         #all elements in game is rects
         self.rect = self.image.get_rect()

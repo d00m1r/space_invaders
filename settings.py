@@ -1,3 +1,5 @@
+import pygame
+
 class Settings():
     '''class store all settings for Space invaders'''
 
@@ -5,17 +7,20 @@ class Settings():
         '''Initialize the game's settings'''
 
         #Field
-        self.screen_wigth = 800
+        self.screen_wigth = 1200
         self.screen_height = 800
-        self.bg_color = (100, 100, 100)
-
+        self.bg_color = (0, 0, 0)
+        self.screen_image = pygame.image.load('/home/damir/projects/python/space_invaders/pic/space.png')
+        
         #Ship
         self.ship_limit = 3
 
         #Bullet
         self.bullet_limit = 3
         self.bullet_width = 3
+        self.bullet_height = 15 
         self.bullet_height = 15
+
         self.bullet_color = 200, 200, 0
 
         #Alien

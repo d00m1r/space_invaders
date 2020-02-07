@@ -208,8 +208,8 @@ def check_high_score(stats, sb):
     
 def update_screen(ai_settings, stats, screen, sb, ship, bullets, aliens, play_button):
     '''draw screen and elements'''
-    screen.fill(ai_settings.bg_color)
-
+    #screen.fill(ai_settings.bg_color)
+    screen.blit(ai_settings.screen_image, (0, 0))
     if stats.game_active:
         ship.draw_ship()
         aliens.draw(screen)
